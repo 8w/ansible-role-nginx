@@ -28,7 +28,13 @@
 - include: configuration.yml
   tags: [configuration,nginx]
 
-- name: Start the nginx service
-  service: name={{ nginx_service_name }} state=started enabled=yes
+#
+# don't attempt to start the service now - some of the config files are put in place
+# by other roles.  It will be started by calls to the restart handler anyway...
+# just enable it
+#
+- name: Enable the nginx service
+  service: name={{ nginx_service_name }} enabled=yes
+#  service: name={{ nginx_service_name }} state=started enabled=yes
   when: nginx_installation_type in nginx_installation_types_using_service and nginx_daemon_mode == "on"
   tags: [service,nginx]
